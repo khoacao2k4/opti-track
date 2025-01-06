@@ -1,5 +1,3 @@
-import type { NextConfig } from "next";
-
 const nextConfig = {
 
   reactStrictMode: false,
@@ -16,9 +14,10 @@ const nextConfig = {
   },
 
   //Use for the BUILD PROD
+  //@ts-ignore
   webpack(config) {
     // Grab the existing rule that handles SVG imports
-    const fileLoaderRule = config.module.rules.find((rule) =>
+    const fileLoaderRule = config.module.rules.find((rule: { test: { test: (arg0: string) => any; }; }) =>
       rule.test?.test?.('.svg'),
     );
 
