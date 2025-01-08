@@ -1,17 +1,13 @@
 "use client";
-import dynamic from "next/dynamic";
 import { Text, View, Document, Page, Image } from "@react-pdf/renderer";
 import styles from "./style";
-
-const PDFViewer = dynamic(() => import("./pdfViewer"), {
-  ssr: false
-});
 
 const phone_number = "0913963003";
 const email = "drkhanhtrang.ophth@gmail.com";
 
-export default function PagePDF() {
-  const MyDocument = () => (
+export default function GlassesForm({ name, YOB, gender, MT, MP }: { name: string, YOB: string, gender: string, MT: { [key: string]: string }, MP: { [key: string]: string } }) {
+  const visionStat = ['UCVA', 'SPH', 'CYL', 'AX', 'BCVA', 'ADD']
+  return (
     <Document>
       <Page size="A5" style={styles.page}>
         <View style={styles.header}>
@@ -31,26 +27,39 @@ export default function PagePDF() {
         <Text style={styles.title}>ĐƠN KÍNH</Text>
         <View style={{ marginBottom: "20px" }}>
           <View style={styles.section}>
-            <Text style={styles.name}>Họ và tên: Cao Quang Nhật Khoa</Text>
-            <Text>Năm sinh: 2004</Text>
-            <Text>Giới tính: Nam</Text>
+            <Text style={styles.name}>Họ và tên: {name}</Text>
+            <Text>Năm sinh: {YOB}</Text>
+            <Text>Giới tính: {gender}</Text>
           </View>
           <Text>Địa chỉ: 13 Đào Duy Từ</Text>
         </View>
         <View style={styles.table}>
           <View style={styles.tableRow}>
-            {['UCVA', 'SPH', 'CYL', 'AX', 'BCVA', 'ADD'].map((item, i) => (
-              <Text key={i} style={styles.tableColHeader}>{item}</Text>
+            <Text key="emptyHeader" style={styles.tableColHeader}/>
+            {visionStat.map((item) => (
+              <Text key={"header_"+item} style={styles.tableColHeader}>{item}</Text>
             ))}
           </View>
-          {['MP/OD', 'MT/OS'].map((row, i) => (
+          <View key={"MP"} style={styles.tableRow}>
+            <Text style={styles.tableCol}>MP/OD</Text>
+            {visionStat.map((item) => (
+              <Text key={"MP_"+item} style={styles.tableCol}>{MP[item]}</Text>
+            ))}
+          </View>
+          <View key={"MT"} style={styles.tableRow}>
+            <Text style={styles.tableCol}>MT/OS</Text>
+            {visionStat.map((item) => (
+              <Text key={"MT_"+item} style={styles.tableCol}>{MT[item]}</Text>
+            ))}
+          </View>
+          {/* {['MP/OD', 'MT/OS'].map((row, i) => (
             <View key={i} style={styles.tableRow}>
               <Text style={styles.tableCol}>{row}</Text>
-              {[...Array(5)].map((_, j) => (
+              {[...Array(6)].map((_, j) => (
                 <Text key={j} style={styles.tableCol}> </Text>
               ))}
             </View>
-          ))}
+          ))} */}
         </View>
         <View>
           <Text>PD:</Text>
@@ -75,12 +84,5 @@ export default function PagePDF() {
         </View>
       </Page>
     </Document>
-  );
-  return (
-    <div className="w-full h-[750px]">
-      <PDFViewer style={{ width: "100%", height: "100vh" }}>
-        <MyDocument />
-      </PDFViewer>
-    </div>
   );
 }

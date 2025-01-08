@@ -1,10 +1,10 @@
-import RecordForm from "./components/pdf/record-form";
+import RecordForm from "./components/pdf/glasses-form";
+import UserForm from "./components/user-form";
 
 export default function Home() {
   return (
     <div>
-      <RecordForm />
+      <UserForm />
     </div>
-    
   );
 }

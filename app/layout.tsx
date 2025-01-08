@@ -1,4 +1,6 @@
+import '@mantine/core/styles.css';
 import type { Metadata } from "next";
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -11,9 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body>
-        {children}
+        <MantineProvider>{children}</MantineProvider>
       </body>
     </html>
   );
