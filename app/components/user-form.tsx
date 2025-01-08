@@ -4,10 +4,19 @@ import { useForm } from '@mantine/form'
 import React, { useState } from 'react';
 import GlassesForm from './pdf/glasses-form';
 import dynamic from 'next/dynamic';
+import { IconDownload, IconDirectionSign } from '@tabler/icons-react';
 
 const PDFViewer = dynamic(() => import("./pdf/pdfViewer"), {
   ssr: false
 });
+
+const PDFDownloadLink = dynamic(
+  () => import("@react-pdf/renderer").then((mod) => mod. PDFDownloadLink),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>,
+  },
+);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const visionStat = ["UCVA", "SPH", "CYL", "AX", "BCVA", "ADD"]
@@ -62,6 +71,10 @@ const UserForm = () => {
       // MP_UCVA: '', MP_SPH: '', MP_CYL: '', MP_AX: '', MP_BCVA: '', MP_ADD: '',
       // MT_UCVA: '', MT_SPH: '', MT_CYL: '', MT_AX: '', MT_BCVA: '', MT_ADD: '',
     },
+    validate: {
+      name: (value) => (
+        value.length >= 50 ? 'Name too long' : value.length < 2 ? 'Name must have at least 2 letters' : null),
+    }
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedValues, setSubmittedValues] = useState({ 
@@ -96,18 +109,20 @@ const UserForm = () => {
         </Box>
         <Box px="md" pt={"md"}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Fieldset legend="Thông tin bệnh nhân" mb={"md"}>
+            <Fieldset legend="Patient's Information" mb={"md"}>
               <Group grow>
                 <TextInput
+                  required
                   withAsterisk
-                  label="Họ và tên"
+                  label="Full Name"
                   key={form.key('name')}
                   {...form.getInputProps('name')}
                   mb={"md"}
                 />
                 <NumberInput
+                  required
                   withAsterisk
-                  label="Năm sinh"
+                  label="Year of Birth"
                   min={1000}
                   max={2100}
                   allowDecimal={false}
@@ -120,7 +135,9 @@ const UserForm = () => {
               <Grid>
                 <Grid.Col span={3}>
                   <Select
-                    label="Giới tính"
+                    required
+                    withAsterisk
+                    label="Gender"
                     key={form.key('gender')}
                     {...form.getInputProps('gender')}
                     placeholder="Chọn giới tính"
@@ -129,39 +146,41 @@ const UserForm = () => {
                 </Grid.Col>
                 <Grid.Col span={9}>
                   <TextInput
+                    required
                     withAsterisk
-                    label="Địa chỉ"
+                    label="Address"
                     key={form.key('address')}
                     {...form.getInputProps('address')}
                   />
                 </Grid.Col>
               </Grid>
             </Fieldset>
-            <Fieldset legend="Kết quả về mắt" mb={"md"}>
+            <Fieldset legend="Eye Examination Result" mb={"md"}>
               <VisionTable form={form}/>
             </Fieldset>
-            <Fieldset legend="Chuẩn đoán" mb={"md"}>
+            <Fieldset legend="Diagnostic Information" mb={"md"}>
               <TextInput
-                label="Kính hiện tại"
+                label="Current Glasses"
                 key={form.key('current_glasses')}
                 {...form.getInputProps('current_glasses')}
                 mb={"sm"}
               />
               <TextInput
-                label="Mắt phải"
+                label="Right Eye"
                 key={form.key('right_eye')}
                 {...form.getInputProps('right_eye')}
                 mb={"sm"}
               />
               <TextInput
-                label="Mắt trái"
+                label="Left Eye"
                 key={form.key('left_eye')}
                 {...form.getInputProps('left_eye')}
                 mb={"sm"}
               />
               <NumberInput
                 withAsterisk
-                label="Tái khám sau mấy tháng?"
+                required
+                label="Re-examination in how many months?"
                 min={0}
                 allowDecimal={false}
                 hideControls={true}
@@ -171,7 +190,7 @@ const UserForm = () => {
               />
             </Fieldset>
             <Group justify="center" mt="md">
-              <Button type="submit" size='md'>Submit</Button>
+              <Button type="submit" size='md' rightSection={<IconDirectionSign size={24} />}>Submit</Button>
             </Group>
           </form>
         </Box>
@@ -180,7 +199,12 @@ const UserForm = () => {
       {/* Right Section - PDF Viewer */}
       <Grid.Col span={6}>
         <Box p="md" style={{ borderLeft: '1px solid #ccc', height: '100%' }} hidden={!isSubmitted}>
-          <PDFViewer style={{ width: "100%", height: "100%"}}>
+          <Group justify="center" mb="sm">
+            <PDFDownloadLink document={<GlassesForm {...submittedValues} />} fileName={submittedValues.name}>
+            <Button size='md' color='red' rightSection={<IconDownload size={24} />}>Download PDF</Button>
+            </PDFDownloadLink>
+          </Group>
+          <PDFViewer style={{ width: "100%", height: "95%"}}>
             <GlassesForm {...submittedValues} />
           </PDFViewer>
         </Box>

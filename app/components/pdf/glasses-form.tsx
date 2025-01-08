@@ -65,14 +65,6 @@ export default function GlassesForm({ name, YOB, gender, address, MT, MP, curren
               <Text key={"MT_"+item} style={styles.tableCol}>{MT[item]}</Text>
             ))}
           </View>
-          {/* {['MP/OD', 'MT/OS'].map((row, i) => (
-            <View key={i} style={styles.tableRow}>
-              <Text style={styles.tableCol}>{row}</Text>
-              {[...Array(6)].map((_, j) => (
-                <Text key={j} style={styles.tableCol}> </Text>
-              ))}
-            </View>
-          ))} */}
         </View>
         <View>
           <Text>CURRENT GLASSES: {current_glasses}</Text>
