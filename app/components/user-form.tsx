@@ -6,17 +6,13 @@ import GlassesForm from './pdf/glasses-form';
 import dynamic from 'next/dynamic';
 import { IconDownload, IconDirectionSign } from '@tabler/icons-react';
 
-const PDFViewer = dynamic(() => import("./pdf/pdfViewer"), {
+const PDFViewer = dynamic(() => import("./lib/pdfViewer"), {
   ssr: false
 });
 
-const PDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then((mod) => mod. PDFDownloadLink),
-  {
-    ssr: false,
-    loading: () => <p>Loading...</p>,
-  },
-);
+const PDFDownloadLink = dynamic(() => import("./lib/pdfDownloader"), {
+  ssr: false
+});
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const visionStat = ["UCVA", "SPH", "CYL", "AX", "BCVA", "ADD"]
