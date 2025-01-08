@@ -47,10 +47,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontStyle: "italic",
   },
+  textWrap: {
+    display: "flex",
+    flexWrap: "wrap",
+    flexGrow: 1,
+    flexBasis: 0,
+  },
   section: {
     flexDirection: "row",
     gap: 10,
-    marginBottom: "20px"
+    marginBottom: "20px",
+    flexWrap: "wrap"
   },
   name: {
     flexGrow: 0.5

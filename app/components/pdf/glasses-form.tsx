@@ -5,7 +5,20 @@ import styles from "./style";
 const phone_number = "0913963003";
 const email = "drkhanhtrang.ophth@gmail.com";
 
-export default function GlassesForm({ name, YOB, gender, MT, MP }: { name: string, YOB: string, gender: string, MT: { [key: string]: string }, MP: { [key: string]: string } }) {
+interface GlassesFormProps {
+  name: string, 
+  YOB: string, 
+  gender: string, 
+  address: string,
+  MT: { [key: string]: string }, 
+  MP: { [key: string]: string },
+  current_glasses: string,
+  right_eye: string,
+  left_eye: string
+  reassessmentTime: string
+}
+
+export default function GlassesForm({ name, YOB, gender, address, MT, MP, current_glasses, right_eye, left_eye, reassessmentTime }: GlassesFormProps) {
   const visionStat = ['UCVA', 'SPH', 'CYL', 'AX', 'BCVA', 'ADD']
   return (
     <Document>
@@ -27,11 +40,11 @@ export default function GlassesForm({ name, YOB, gender, MT, MP }: { name: strin
         <Text style={styles.title}>ĐƠN KÍNH</Text>
         <View style={{ marginBottom: "20px" }}>
           <View style={styles.section}>
-            <Text style={styles.name}>Họ và tên: {name}</Text>
+            <Text style={[styles.name, styles.textWrap]}>Họ và tên: {name}</Text>
             <Text>Năm sinh: {YOB}</Text>
             <Text>Giới tính: {gender}</Text>
           </View>
-          <Text>Địa chỉ: 13 Đào Duy Từ</Text>
+          <Text>Địa chỉ: {address}</Text>
         </View>
         <View style={styles.table}>
           <View style={styles.tableRow}>
@@ -62,10 +75,11 @@ export default function GlassesForm({ name, YOB, gender, MT, MP }: { name: strin
           ))} */}
         </View>
         <View>
-          <Text>PD:</Text>
-          <Text>GLASSES</Text>
-          <Text>OD:</Text>
-          <Text>OS:</Text>
+          <Text>CURRENT GLASSES: {current_glasses}</Text>
+          <View style={{ marginLeft: '83px', flexDirection: 'column' }}>
+            <Text>OD: {right_eye}</Text>
+            <Text>OS: {left_eye}</Text>
+          </View>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: '20px'}}>
           <View>
@@ -73,7 +87,7 @@ export default function GlassesForm({ name, YOB, gender, MT, MP }: { name: strin
             <Text>- Hạn chế sử dụng vi tính, điện thoại</Text>
             <Text>- Tăng cường chơi thể thao ngoài trời</Text>
             <Text>- Đeo kính thường xuyên</Text>
-            <Text>- Tái khám sau 10 THÁNG	</Text>
+            <Text>- Tái khám sau {reassessmentTime} THÁNG	</Text>
             <Text>- Đem theo toa cũ khi tái khám.</Text>
           </View>
           <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

@@ -14,9 +14,9 @@ const nextConfig = {
   },
 
   //Use for the BUILD PROD
-  webpack(config) {
+  webpack(config: any) {
     // Grab the existing rule that handles SVG imports
-    const fileLoaderRule = config.module.rules.find((rule) =>
+    const fileLoaderRule = config.module.rules.find((rule: { test: { test: (arg0: string) => any; }; }) =>
       rule.test?.test?.('.svg'),
     );
 
