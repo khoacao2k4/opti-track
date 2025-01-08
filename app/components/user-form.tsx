@@ -48,6 +48,8 @@ const VisionTable = ({form}: {form: any}) => {
 };
 
 const UserForm = () => {
+  const genderOptions = ['Male', 'Female', 'Other'];
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -70,6 +72,7 @@ const UserForm = () => {
     validate: {
       name: (value) => (
         value.length >= 50 ? 'Name too long' : value.length < 2 ? 'Name must have at least 2 letters' : null),
+      gender: (value) => !genderOptions.includes(value) ? 'Gender is required' : null
     }
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -79,8 +82,8 @@ const UserForm = () => {
   });
 
   const handleSubmit = (values: any) => {
-    setIsSubmitted(true);
     setSubmittedValues(values);
+    setIsSubmitted(true);
     console.log(values);
   };
 
@@ -135,9 +138,9 @@ const UserForm = () => {
                     withAsterisk
                     label="Gender"
                     key={form.key('gender')}
-                    {...form.getInputProps('gender')}
-                    placeholder="Chọn giới tính"
-                    data={['Nam', 'Nữ', 'Khác']}
+                    {...form.getInputProps('gender', { type: 'checkbox' })}
+                    placeholder="Select gender"
+                    data={genderOptions}
                   />
                 </Grid.Col>
                 <Grid.Col span={9}>
@@ -200,9 +203,10 @@ const UserForm = () => {
             <Button size='md' color='red' rightSection={<IconDownload size={24} />}>Download PDF</Button>
             </PDFDownloadLink>
           </Group>
+          {isSubmitted && 
           <PDFViewer style={{ width: "100%", height: "95%"}}>
             <GlassesForm {...submittedValues} />
-          </PDFViewer>
+          </PDFViewer>}
         </Box>
       </Grid.Col>
     </Grid>

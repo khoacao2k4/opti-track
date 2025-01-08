@@ -20,6 +20,7 @@ interface GlassesFormProps {
 
 export default function GlassesForm({ name, YOB, gender, address, MT, MP, current_glasses, right_eye, left_eye, reassessmentTime }: GlassesFormProps) {
   const visionStat = ['UCVA', 'SPH', 'CYL', 'AX', 'BCVA', 'ADD']
+  const gender_vn = gender === 'Male' ? 'Nam' : gender === 'Female' ? 'Nữ' : 'Khác'
   return (
     <Document>
       <Page size="A5" style={styles.page}>
@@ -42,7 +43,7 @@ export default function GlassesForm({ name, YOB, gender, address, MT, MP, curren
           <View style={styles.section}>
             <Text style={[styles.name, styles.textWrap]}>Họ và tên: {name}</Text>
             <Text>Năm sinh: {YOB}</Text>
-            <Text>Giới tính: {gender}</Text>
+            <Text>Giới tính: {gender_vn}</Text>
           </View>
           <Text>Địa chỉ: {address}</Text>
         </View>
